@@ -26,12 +26,21 @@ public class IrsDemo {
     }
     
     public static void main(String[] args) throws IOException {
+        
+        // Parse the file
         Fpmlmain54DocumentRoot doc = C24.parse(Fpmlmain54DocumentRoot.class).from(new File("/valid-ird-ex01-vanilla-swap.xml"));
         
-        System.out.println("Stored size: " + doc.getData().array().length);
         
+        // Compacted data
+        System.out.println("Stored size: " + doc.getData().array().length);
         visualise(doc, System.out);
         
+        
+        // We can still query any field in the message via a strongly-typed Java API
+        System.out.println("Name of first party is " + doc.getDataDocument().getPartiesAndAccountsmodel().getParty(0).getPartyName().getValue());
+        
+        
+        // Reconstruct the whole message from the SDO
         C24.write(doc).as(JSON).to(System.out);
     }
 
